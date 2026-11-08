@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "lint": "eslint . bin/www --max-warnings=0",
+    "lint:fix": "eslint . bin/www --fix"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
@@ -15,6 +17,9 @@
     "pug": "^3.0.3"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0",
     "nodemon": "^3.1.10"
   },
   "engines": {
