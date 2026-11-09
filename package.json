@@ -6,11 +6,13 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "lint": "eslint . bin/www --max-warnings=0",
-    "lint:fix": "eslint . bin/www --fix"
+    "lint:fix": "eslint . bin/www --fix",
+    "test": "jest"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "debug": "^4.4.3",
+    "dotenv": "^18.0.10",
     "express": "^5.1.0",
     "http-errors": "^2.0.0",
     "mongoose": "^9.12.0",
@@ -21,6 +23,7 @@
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.32.0",
+    "jest": "^30.5.2",
     "nodemon": "^3.1.10"
   },
   "engines": {
@@ -38,5 +41,10 @@
     "env": {
       "NODE_ENV": "development"
     }
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/test/**/*.test.js"
+    ]
   }
 }
