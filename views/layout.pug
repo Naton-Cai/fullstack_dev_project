@@ -3,7 +3,14 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title= title
+    title= title ? `${title} | Paint Collection` : 'Paint Collection'
+    link(rel="stylesheet", href="/vendor/bootstrap/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    header.site-header
+      nav.container.d-flex.gap-3.py-3(aria-label='Main navigation')
+        a(href='/') Collection 
+        a(href='/mixer') Mixer
+
+    main.container
+      block content
