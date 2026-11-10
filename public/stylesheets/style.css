@@ -9,3 +9,12 @@ body {
 a {
   color: #00b7ff;
 }
+
+/* Navbar css */
+.site-header {
+  background-color: #f1f3f5;
+}
+
+.site-header a {
+  color: #245a81;
+}
