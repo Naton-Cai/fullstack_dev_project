@@ -6,6 +6,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const testinsertRouter = require('./routes/testinsert');
 
 const app = express();
 
@@ -32,6 +33,9 @@ app.use(
 );
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+// temp insert to test connectivity to MongoDB, we should remove later
+app.use('/testinsert', testinsertRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
