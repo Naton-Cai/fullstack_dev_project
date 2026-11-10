@@ -24,7 +24,12 @@ app.use(
     path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css'),
   ),
 );
-
+app.use(
+  '/vendor/bootstrap/js',
+  express.static(
+    path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js'),
+  ),
+);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
