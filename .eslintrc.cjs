@@ -4,10 +4,10 @@ module.exports = {
     node: true,
     es2022: true,
   },
-  extends: ["airbnb-base"],
+  extends: ['airbnb-base'],
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "script",
+    ecmaVersion: 'latest',
+    sourceType: 'script',
   },
-  ignorePatterns: ["node_modules/", "coverage/"],
-}
+  ignorePatterns: ['node_modules/', 'coverage/'],
+};
