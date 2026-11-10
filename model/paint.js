@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 // we use regex to match our hexvalue
-const colorSchema = new mongoose.Schema(
+const colorSchema = new Schema(
   {
     name: {
       type: String,
