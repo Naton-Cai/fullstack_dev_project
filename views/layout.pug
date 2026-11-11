@@ -3,7 +3,30 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title= title
+    title= title ? `${title} | Paint Collection` : 'Paint Collection'
+    link(rel="stylesheet", href="/vendor/bootstrap/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    header.site-header.sticky-top
+      nav.navbar.navbar-expand-lg.shadow.container-fluid.px-3(aria-label='Main navigation')
+          span.navbar-brand.mb-0= 'Paint Collection'
+          button.navbar-toggler.ms-auto(
+            type='button'
+            data-bs-toggle='collapse'
+            data-bs-target='#navbarSupportedContent'
+            aria-controls='navbarSupportedContent'
+            aria-expanded='false'
+            aria-label='Toggle navigation'
+          )
+            span.navbar-toggler-icon
+          #navbarSupportedContent.collapse.navbar-collapse
+            ul.navbar-nav.me-auto.mb-2.mb-lg-0.fs-5.gap-lg-2
+              li.nav-item
+                a.nav-link(href='/') Collection 
+              li.nav-item
+                a.nav-link(href='/mixer') Mixer
+
+    main.container
+      block content
+
+    script(src='/vendor/bootstrap/js/bootstrap.bundle.min.js')

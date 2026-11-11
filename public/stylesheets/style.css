@@ -1,8 +1,20 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font:
+    14px 'Lucida Grande',
+    Helvetica,
+    Arial,
+    sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+/* Navbar css */
+.site-header {
+  background-color: #f1f3f5;
+}
+
+.site-header a {
+  color: #245a81;
 }
