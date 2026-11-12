@@ -97,7 +97,7 @@ exports.paint_create_post = [
     try {
       await paint.save();
       // redirect the main index
-      res.status(201).json(paint);
+      res.redirect('/');
     } catch (err) {
       // Safety net: the schema's own validation failed.
       if (err.name === 'ValidationError') {
@@ -120,7 +120,7 @@ exports.paint_delete_get = async (req, res) => {
 
   if (paint === null) {
     // no results, redirect to the main collection page.
-    res.redirect('/index');
+    res.redirect('/');
     return;
   }
 
@@ -137,11 +137,11 @@ exports.paint_delete_post = async (req, res) => {
 
   if (paint === null) {
     // no results, redirect to the main collection page.
-    res.redirect('/index');
+    res.redirect('/');
     return;
   }
 
   // Delete object and redirect to the collection.
   await Paint.findByIdAndDelete(req.body.paintid);
-  res.redirect('/catalog/authors');
+  res.redirect('/');
 };
