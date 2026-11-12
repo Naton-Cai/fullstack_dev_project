@@ -130,7 +130,7 @@ exports.paint_delete_get = async (req, res) => {
 };
 
 // Handle Paint delete on POST.
-exports.author_delete_post = async (req, res) => {
+exports.paint_delete_post = async (req, res) => {
   // Get details of paints
   const paint = await Promise.all(Paint.findById(req.params.id).exec());
 
