@@ -13,7 +13,7 @@ exports.paint_list = async (req, res) => {
 };
 
 // display Paint create form on GET.
-exports.author_create_get = (req, res) => {
+exports.paint_create_get = (req, res) => {
   res.render('paint_form', { title: 'Create Paint' });
 };
 
