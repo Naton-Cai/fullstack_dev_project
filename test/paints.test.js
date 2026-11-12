@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const Color = require('../model/paint');
+const Color = require('../models/paint');
 
 // a generic color mix for testing
 const validColor = () => ({
