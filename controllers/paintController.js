@@ -96,7 +96,8 @@ exports.paint_create_post = [
     // data from form is valid. Save and redirect to the new paint record.
     try {
       await paint.save();
-      res.redirect(paint.url);
+      // redirect the main index
+      res.status(201).json(paint);
     } catch (err) {
       // Safety net: the schema's own validation failed.
       if (err.name === 'ValidationError') {
