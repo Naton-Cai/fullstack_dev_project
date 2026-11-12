@@ -116,7 +116,7 @@ exports.paint_create_post = [
 // Display Paint delete form on GET.
 exports.paint_delete_get = async (req, res) => {
   // Get details of paints
-  const paint = await Promise.all(Paint.findById(req.params.id).exec());
+  const paint = await Paint.findById(req.params.id).exec();
 
   if (paint === null) {
     // no results, redirect to the main collection page.
@@ -133,7 +133,7 @@ exports.paint_delete_get = async (req, res) => {
 // Handle Paint delete on POST.
 exports.paint_delete_post = async (req, res) => {
   // Get details of paints
-  const paint = await Promise.all(Paint.findById(req.params.id).exec());
+  const paint = await Paint.findById(req.params.id).exec();
 
   if (paint === null) {
     // no results, redirect to the main collection page.
