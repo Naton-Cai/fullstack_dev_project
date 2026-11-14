@@ -1,0 +1,78 @@
+
+extends layout
+
+block content
+  // Get the existing paint if one was provided.
+  - const currentPaint = typeof paint !== 'undefined' ? paint : null
+
+  // Set default values for the form.
+  - const paintName = currentPaint ? currentPaint.name : ''
+  - const paintHex = currentPaint ? currentPaint.hexValue : '#FF5733'
+  - const paintDescription = currentPaint ? currentPaint.description : ''
+
+  // Main Add Paint container.
+  .paint-form-container.mt-5
+    h1.mb-4= title || 'Add Paint'
+
+    // Display validation errors from the backend.
+    if typeof errors !== 'undefined' && errors.length
+      .alert.alert-danger
+        ul.mb-0
+          each error in errors
+            li= error.msg
+
+    // Form submits to the current URL.
+    form#paintForm(method="POST")
+      .row.g-4
+
+        // Left side: Paint information.
+        .col-md-8
+          .mb-3
+            label.form-label(for="paintName") Paint Name
+            input#paintName.form-control(
+              type="text"
+              name="name"
+              value=paintName
+              placeholder="Enter paint name"
+              required
+            )
+
+          .mb-3
+            label.form-label(for="hexValue") Hex Value
+            input#hexValue.form-control(
+              type="text"
+              name="hexValue"
+              value=paintHex
+              placeholder="#FF5733"
+              pattern="#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})"
+              maxlength="7"
+              required
+            )
+
+            small.form-text.text-muted
+              | Example: #FF5733 or #F53
+
+            #hexError.text-danger.mt-1
+
+          .mb-3
+            label.form-label(for="description") Description
+            textarea#description.form-control(
+              name="description"
+              rows="3"
+              placeholder="Optional paint description"
+            )= paintDescription
+
+        // Right side: Live color preview.
+        .col-md-4
+          .preview-section
+            h5 Preview
+            #colorPreview
+            p#previewHex.text-center.mt-2
+
+      // Save and Cancel buttons.
+      .form-buttons.mt-4
+        button.btn.btn-primary(type="submit") Save Paint
+        a.btn.btn-secondary(href="/") Cancel
+
+  // Load JavaScript for live color preview.
+  script(src="/javascripts/add-paint.js")
