@@ -1,18 +1,17 @@
 // generate Claude to quickly test the MongoDB connection
 const express = require('express');
-const Color = require('../model/paint');
+const paintController = require('../controllers/paintController');
 
 const router = express.Router();
 
-// POST /paints  -> saves one paint
-router.post('/', async (req, res) => {
-  try {
-    const saved = await Color.create(req.body);
-    res.status(201).json(saved);
-  } catch (err) {
-    // Validation errors (bad hex, percentages not summing to 100, etc.)
-    res.status(400).json({ error: err.message });
-  }
-});
+// POST /paints -> validate, sanitize, and save one paint (handled by the controller)
+router.post(
+  '/',
+  (req, res, next) => {
+    console.log('testinsert hit:', req.body);
+    next();
+  },
+  paintController.paint_create_post,
+);
 
 module.exports = router;
