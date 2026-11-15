@@ -37,7 +37,9 @@
       "bin",
       "routes",
       "views",
-      "public"
+      "public",
+      "controllers",
+      "models"
     ],
     "ext": "js,json,pug,css",
     "env": {

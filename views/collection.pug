@@ -5,36 +5,42 @@ block content
     
         //- Search and Add Paint
         div.d-flex.gap-3.mb-4
-            div.flex-grow-1
+            form.d-flex.gap-2.flex-grow-1(action='/' method='GET')
                 label.visually-hidden(for='paint-search') Search paint
                 input#paint-search.form-control.rounded-pill(
                     type='search'
                     placeholder='Search Paint'
+                    name='search'
+                    value=search
                 )
+                button.btn.btn-outline-dark(type='submit') Search
 
-            button.btn.btn-outline-dark.text-nowrap(type='button') Add Paint
+            a.btn.btn-primary.text-nowrap(href='/change/this/to/add/paint/route') Add Paint
         
         //- Responsive paint grid
-        if paints && paints.length !== 0
-            div.row.row-cols-1.row-cols-sm-2.row.row-cols-md-3.g-3
-                each paint in paints    
+        if paint_list && paint_list.length !== 0
+            div.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3
+                each paint in paint_list    
                     div.col 
                         article.card.h-100.border-secondary
                             div.card-body 
                                 div.ratio.ratio-4x3.border.border-dark.rounded(
-                                    style=`background-color: ${paint.Hex_value};`
+                                    style=`background-color: ${paint.hexValue};`
                                     role='img'
-                                    aria-label=`Color preview for ${paint.Name}`
+                                    aria-label=`Color preview for ${paint.name}`
                                 )
                             
                                 div.d-flex.justify-content-between.align-items-center.gap-2.mt-3
                                     div
-                                        h2.h6.mb-1.fw-bold= paint.Name
-                                        p.mb-0.fst-italic Hex: #{paint.Hex_value}
+                                        h2.h6.mb-1.fw-bold= paint.name
+                                        p.mb-0.fst-italic Hex: #{paint.hexValue}
 
                                     button.btn.btn-outline-danger.btn-sm(
                                         type='button'
-                                        aria-label=`Delete ${paint.Name}`
+                                        aria-label=`Delete ${paint.name}`
                                     ) Delete
         else
-            p.text-center.text-muted.py-5 No paints in your collection yet.
+            if search 
+                p.text-center.text-muted.py-5 No matching paints found.
+            else
+                p.text-center.text-muted.py-5 No paints in your collection yet.

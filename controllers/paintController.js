@@ -3,12 +3,34 @@ const Paint = require('../models/paint');
 
 const HEX_REGEX = /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/;
 
+// Utility function to escape regex special characters
+const escapeRegex = (str) => {
+  if (typeof str !== 'string') return '';
+  // Escape characters: . * + ? ^ $ { } ( ) | [ ] \
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
 // displays all paints
 exports.paint_list = async (req, res) => {
-  const allPaints = await Paint.find().sort({ name: 1 }).exec();
-  res.render('paint_list', {
+  const searchQuery =
+    typeof req.query.search === 'string' ? (req.query.search ?? '').trim() : '';
+  const filter = {};
+
+  const safePattern = escapeRegex(searchQuery);
+
+  if (searchQuery !== '') {
+    filter.name = {
+      $regex: safePattern,
+      $options: 'i',
+    };
+  }
+
+  const allPaints = await Paint.find(filter).sort({ name: 1 }).exec();
+
+  res.render('collection', {
     title: 'Paint Collection',
     paint_list: allPaints,
+    search: searchQuery,
   });
 };
 
@@ -54,7 +76,11 @@ exports.paint_create_post = [
     // for the schema rule, if both percentages are given, they must sum to 100.
     .custom((value, { req }) => {
       const p1 = req.body.paint1Percent; // already converted by toFloat() above
-      if (typeof p1 === 'number' && !Number.isNaN(p1) && Math.abs(p1 + value - 100) > 0.001) {
+      if (
+        typeof p1 === 'number' &&
+        !Number.isNaN(p1) &&
+        Math.abs(p1 + value - 100) > 0.001
+      ) {
         throw new Error('Paint 1 and Paint 2 percentages must add up to 100.');
       }
       return true;
@@ -66,21 +92,31 @@ exports.paint_create_post = [
     const errors = validationResult(req);
 
     const {
-      name, hexValue, description,
-      paint1Hex, paint1Percent, paint2Hex, paint2Percent,
+      name,
+      hexValue,
+      description,
+      paint1Hex,
+      paint1Percent,
+      paint2Hex,
+      paint2Percent,
     } = req.body;
 
     // only include recipe fields the user actually filled in.
     const recipe = Object.fromEntries(
       Object.entries({
-        paint1Hex, paint1Percent, paint2Hex, paint2Percent,
-      })
-        .filter(([, v]) => v !== '' && v != null),
+        paint1Hex,
+        paint1Percent,
+        paint2Hex,
+        paint2Percent,
+      }).filter(([, v]) => v !== '' && v != null),
     );
 
     // create Paint object with escaped and trimmed data
     const paint = new Paint({
-      name, hexValue, description, recipe,
+      name,
+      hexValue,
+      description,
+      recipe,
     });
 
     if (!errors.isEmpty()) {
