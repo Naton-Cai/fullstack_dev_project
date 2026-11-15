@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator');
+const { isObjectIdOrHexString } = require('mongoose');
 const Paint = require('../models/paint');
 
 const HEX_REGEX = /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/;
@@ -151,6 +152,11 @@ exports.paint_create_post = [
 
 // Display Paint delete form on GET.
 exports.paint_delete_get = async (req, res) => {
+  if (isObjectIdOrHexString(req.params.id) === false) {
+    res.status(400).send('Invalid paint ID');
+    return;
+  }
+
   // Get details of paints
   const paint = await Paint.findById(req.params.id).exec();
 
@@ -168,6 +174,11 @@ exports.paint_delete_get = async (req, res) => {
 
 // Handle Paint delete on POST.
 exports.paint_delete_post = async (req, res) => {
+  if (isObjectIdOrHexString(req.params.id) === false) {
+    res.status(400).send('Invalid paint ID');
+    return;
+  }
+
   // Get details of paints
   const paint = await Paint.findById(req.params.id).exec();
 
