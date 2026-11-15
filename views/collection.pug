@@ -35,10 +35,11 @@ block content
                                         h2.h6.mb-1.fw-bold= paint.name
                                         p.mb-0.fst-italic Hex: #{paint.hexValue}
 
-                                    button.btn.btn-outline-danger.btn-sm(
-                                        type='button'
-                                        aria-label=`Delete ${paint.name}`
-                                    ) Delete
+                                    form(action=`/paints/${paint._id}/delete` method='GET')
+                                        button.btn.btn-outline-danger.btn-sm(
+                                            type='submit'
+                                            aria-label=`Delete ${paint.name}`
+                                        ) Delete
         else
             if search 
                 p.text-center.text-muted.py-5 No matching paints found.

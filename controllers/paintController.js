@@ -178,6 +178,6 @@ exports.paint_delete_post = async (req, res) => {
   }
 
   // Delete object and redirect to the collection.
-  await Paint.findByIdAndDelete(req.body.paintid);
+  await Paint.findByIdAndDelete(req.params.id);
   res.redirect('/');
 };
