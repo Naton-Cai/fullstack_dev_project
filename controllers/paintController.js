@@ -13,8 +13,7 @@ const escapeRegex = (str) => {
 
 // displays all paints
 exports.paint_list = async (req, res) => {
-  const searchQuery =
-    typeof req.query.search === 'string' ? (req.query.search ?? '').trim() : '';
+  const searchQuery = typeof req.query.search === 'string' ? (req.query.search ?? '').trim() : '';
   const filter = {};
 
   const safePattern = escapeRegex(searchQuery);
@@ -78,9 +77,9 @@ exports.paint_create_post = [
     .custom((value, { req }) => {
       const p1 = req.body.paint1Percent; // already converted by toFloat() above
       if (
-        typeof p1 === 'number' &&
-        !Number.isNaN(p1) &&
-        Math.abs(p1 + value - 100) > 0.001
+        typeof p1 === 'number'
+        && !Number.isNaN(p1)
+        && Math.abs(p1 + value - 100) > 0.001
       ) {
         throw new Error('Paint 1 and Paint 2 percentages must add up to 100.');
       }

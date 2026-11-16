@@ -32,7 +32,8 @@ block content
                             
                                 div.d-flex.justify-content-between.align-items-center.gap-2.mt-3
                                     div
-                                        h2.h6.mb-1.fw-bold= paint.name
+                                        h2.mb-1
+                                            a(href=`/paints/${paint._id}`).h6.fw-bold=  paint.name
                                         p.mb-0.fst-italic Hex: #{paint.hexValue}
 
                                     form(action=`/paints/${paint._id}/delete` method='GET')
