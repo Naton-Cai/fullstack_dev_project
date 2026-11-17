@@ -1,0 +1,39 @@
+extends layout
+
+block content
+    section.py-4(aria-label='Paint detail')
+        a.d-inline-block.mb-3(href='/paints') Back to collection
+
+        div.row.g-4
+            div.col-md-5
+                div.ratio.ratio-1x1.border.border-secondary.rounded(
+                    style=`background-color: ${paint.hexValue};`
+                    role='img'
+                    aria-label=`Color preview for ${paint.name}: ${paint.hexValue}`
+                )
+
+            div.col-md-7
+                h1= paint.name
+                p.fst-italic Hex: #{paint.hexValue}
+
+                h2.h5 Description
+                p= paint.description || 'No description provided.'
+
+                h2.h5 Mixing recipe
+                if paint.recipe && (paint.recipe.paint1Hex || paint.recipe.paint2Hex)
+                    if paint.recipe.paint1Hex
+                        p
+                            | Color 1: #{paint.recipe.paint1Hex}
+                            if paint.recipe.paint1Percent != null
+                                |  — #{paint.recipe.paint1Percent}%
+                    if paint.recipe.paint2Hex
+                        p
+                            | Color 2: #{paint.recipe.paint2Hex}
+                            if paint.recipe.paint2Percent != null
+                                |  — #{paint.recipe.paint2Percent}%
+                else
+                    p.text-muted No mixing recipe saved.
+
+                a.btn.btn-outline-danger.mt-3(
+                    href=`/paints/${paint._id}/delete`
+                ) Delete paint

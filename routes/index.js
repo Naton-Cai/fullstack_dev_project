@@ -11,6 +11,8 @@ router.get('/', (req, res) => {
 
 router.get('/paints', paintController.paint_list);
 
+router.get('/paints/:id', paintController.paint_detail);
+
 router.get('/paints/:id/delete', paintController.paint_delete_get);
 
 router.post('/paints/:id/delete', paintController.paint_delete_post);
