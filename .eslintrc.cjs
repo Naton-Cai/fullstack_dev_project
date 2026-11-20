@@ -9,5 +9,8 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'script',
   },
+  rules: {
+    'linebreak-style': 'off',
+  },
   ignorePatterns: ['node_modules/', 'coverage/'],
 };

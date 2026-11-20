@@ -5,7 +5,11 @@ const router = express.Router();
 
 /* GET home page. */
 // eslint-disable-next-line no-unused-vars
-router.get('/', paintController.paint_list);
+router.get('/', (req, res) => {
+  res.redirect('/paints');
+});
+
+router.get('/paints', paintController.paint_list);
 
 router.get('/paints/:id/delete', paintController.paint_delete_get);
 
