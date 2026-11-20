@@ -1,0 +1,110 @@
+
+extends layout
+
+block content
+  // Get the existing paint if one was provided by the controller.
+  - const currentPaint = typeof paint !== 'undefined' ? paint : null
+
+  // Set initial values for a new or existing paint.
+  - const paintName = currentPaint ? currentPaint.name : ''
+  - const paintHex = currentPaint ? currentPaint.hexValue : '#FF5733'
+  - const paintDescription = currentPaint ? currentPaint.description : ''
+
+  // Main Add Paint container.
+  .paint-form-container.mt-5
+    h1.mb-4= title || 'Add Paint'
+
+    // Display validation errors returned by the backend.
+    if typeof errors !== 'undefined' && errors.length
+      .alert.alert-danger(role="alert")
+        ul.mb-0
+          each error in errors
+            li= error.msg
+
+    // Submit the form to the current URL using POST.
+    form#paintForm(method="POST")
+      .row.g-4
+
+        // LEFT SIDE: Paint information.
+        .col-md-8
+
+          // Paint name is required.
+          .mb-3
+            label.form-label(for="paintName") Paint Name
+            input#paintName.form-control(
+              type="text"
+              name="name"
+              value=paintName
+              placeholder="Enter paint name"
+              required
+            )
+
+          // Hex value is required by the backend.
+          .mb-3
+            label.form-label(for="hexValue") Hex Value
+            input#hexValue.form-control(
+              type="text"
+              name="hexValue"
+              value=paintHex
+              placeholder="#FF5733"
+              pattern="#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})"
+              maxlength="7"
+              required
+            )
+
+            small.form-text.text-muted
+              | Example: #FF5733 or #F53
+
+            // JavaScript displays validation messages here.
+            #hexError.text-danger.mt-1(
+              role="alert"
+              aria-live="polite"
+            )
+
+          // NEW: Visual color picker.
+          // Users can choose a color instead of typing its hex value.
+          .mb-3
+            label.form-label(for="hexPicker") Choose Color
+            input#hexPicker.form-control.form-control-color(
+              type="color"
+              value="#FF5733"
+              title="Choose a paint color"
+            )
+
+            small.form-text.text-muted
+              | Select a color using the color picker.
+
+          // Optional description field.
+          .mb-3
+            label.form-label(for="description") Description
+            textarea#description.form-control(
+              name="description"
+              rows="3"
+              placeholder="Optional paint description"
+            )= paintDescription
+
+        // RIGHT SIDE: Live color preview.
+        .col-md-4
+          .preview-section
+            h5 Preview
+
+            // JavaScript updates this box when the color changes.
+            #colorPreview(
+              role="img"
+              aria-label="Selected paint color preview"
+            )
+
+            // Display the selected hex value.
+            p#previewHex.text-center.mt-2
+
+      // Form buttons.
+      .form-buttons.mt-4
+
+        // Save the paint using the existing backend controller.
+        button.btn.btn-primary(type="submit") Save Paint
+
+        // Return to the Collection page without saving.
+        a.btn.btn-secondary(href="/") Cancel
+
+  // Load JavaScript for validation and color preview.
+  script(src="/javascripts/add-paint.js")

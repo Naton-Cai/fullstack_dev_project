@@ -34,6 +34,10 @@ app.use(
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+// Display the Add Paint form.
+// Reuse the existing controller through the testinsert router.
+app.use('/paints/new', testinsertRouter);
+
 // temp insert to test connectivity to MongoDB, we should remove later
 app.use('/testinsert', testinsertRouter);
 
