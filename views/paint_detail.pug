@@ -21,16 +21,36 @@ block content
 
                 h2.h5 Mixing recipe
                 if paint.recipe && (paint.recipe.paint1Hex || paint.recipe.paint2Hex)
-                    if paint.recipe.paint1Hex
-                        p
-                            | Color 1: #{paint.recipe.paint1Hex}
-                            if paint.recipe.paint1Percent != null
-                                |  — #{paint.recipe.paint1Percent}%
-                    if paint.recipe.paint2Hex
-                        p
-                            | Color 2: #{paint.recipe.paint2Hex}
-                            if paint.recipe.paint2Percent != null
-                                |  — #{paint.recipe.paint2Percent}%
+                    div.row.g-3
+                        //- First recipe component
+                        if paint.recipe.paint1Hex
+                            div.col-12.col-sm-6
+                                div.border.rounded.p-3.d-flex.align-items-center.gap-3
+                                    div.border.rounded.flex-shrink-0(
+                                        style=`background-color: ${paint.recipe.paint1Hex}; width: 48px; height: 48px;`
+                                        role='img'
+                                        aria-label=`Color 1 preview: ${paint.recipe.paint1Hex}`
+                                    )
+                                    div
+                                        h3.h6.mb-1 Color 1
+                                        p.mb-1 Hex: #{paint.recipe.paint1Hex}
+                                        if paint.recipe.paint1Percent != null
+                                            p.mb-0 Ratio: #{paint.recipe.paint1Percent}%
+
+                        //- Second recipe component
+                        if paint.recipe.paint2Hex
+                            div.col-12.col-sm-6
+                                div.border.rounded.p-3.d-flex.align-items-center.gap-3
+                                    div.border.rounded.flex-shrink-0(
+                                        style=`background-color: ${paint.recipe.paint2Hex}; width: 48px; height: 48px;`
+                                        role='img'
+                                        aria-label=`Color 2 preview: ${paint.recipe.paint2Hex}`
+                                    )
+                                    div
+                                        h3.h6.mb-1 Color 2
+                                        p.mb-1 Hex: #{paint.recipe.paint2Hex}
+                                        if paint.recipe.paint2Percent != null
+                                            p.mb-0 Ratio: #{paint.recipe.paint2Percent}%
                 else
                     p.text-muted No mixing recipe saved.
 
