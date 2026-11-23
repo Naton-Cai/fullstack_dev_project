@@ -21,6 +21,9 @@ block content
 
                 h2.h5 Mixing recipe
                 if paint.recipe && (paint.recipe.paint1Hex || paint.recipe.paint2Hex)
+                    if paint.recipe.paint1Percent != null && paint.recipe.paint2Percent != null
+                        if Math.abs(Number(paint.recipe.paint1Percent) + Number(paint.recipe.paint2Percent) - 100) > 0.001
+                            p.text-danger Warning: Mixing percentages must add up to 100%.
                     div.row.g-3
                         //- First recipe component
                         if paint.recipe.paint1Hex
