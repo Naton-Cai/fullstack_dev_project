@@ -79,6 +79,11 @@ exports.paint_create_post = [
   body('description').trim().escape(),
 
   // Recipe fields are optional. Empty form inputs are treated as "not provided".
+  body('paint1Name')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
   body('paint1Hex')
     .optional({ values: 'falsy' })
     .trim()
@@ -89,6 +94,11 @@ exports.paint_create_post = [
     .isFloat({ min: 0, max: 100 })
     .withMessage('Paint 1 percent must be a number from 0 to 100.')
     .toFloat(),
+  body('paint2Name')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
   body('paint2Hex')
     .optional({ values: 'falsy' })
     .trim()
@@ -121,8 +131,10 @@ exports.paint_create_post = [
       name,
       hexValue,
       description,
+      paint1Name,
       paint1Hex,
       paint1Percent,
+      paint2Name,
       paint2Hex,
       paint2Percent,
     } = req.body;
@@ -130,8 +142,10 @@ exports.paint_create_post = [
     // only include recipe fields the user actually filled in.
     const recipe = Object.fromEntries(
       Object.entries({
+        paint1Name,
         paint1Hex,
         paint1Percent,
+        paint2Name,
         paint2Hex,
         paint2Percent,
       }).filter(([, v]) => v !== '' && v != null),

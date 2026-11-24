@@ -21,6 +21,10 @@ const colorSchema = new Schema(
       trim: true,
     },
     recipe: {
+      paint1Name: {
+        type: String,
+        trim: true,
+      },
       paint1Hex: {
         type: String,
         match: /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/,
@@ -30,6 +34,10 @@ const colorSchema = new Schema(
         type: Number,
         min: 0,
         max: 100,
+      },
+      paint2Name: {
+        type: String,
+        trim: true,
       },
       paint2Hex: {
         type: String,

@@ -27,6 +27,21 @@ describe('Paint model', () => {
       const color = new Color({ name: 'Short', hexValue: '#f00' });
       await expect(color.validate()).resolves.toBeUndefined();
     });
+    it('trims the names of both recipe components', async () => {
+      const color = new Color({
+        ...validColor(),
+        recipe: {
+          ...validColor().recipe,
+          paint1Name: '  Crimson  ',
+          paint2Name: ' Lemon Yellow ',
+        },
+      });
+
+      await expect(color.validate()).resolves.toBeUndefined();
+
+      expect(color.recipe.paint1Name).toBe('Crimson');
+      expect(color.recipe.paint2Name).toBe('Lemon Yellow');
+    });
   });
 
   // tests hex values
