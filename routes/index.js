@@ -15,4 +15,9 @@ router.get('/paints/:id/delete', paintController.paint_delete_get);
 
 router.post('/paints/:id/delete', paintController.paint_delete_post);
 
+// GET: Display the Mixer page.
+router.get('/mixer', (req, res) => {
+  res.render('mixer', { title: 'Paint Mixer' });
+});
+
 module.exports = router;

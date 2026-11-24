@@ -18,3 +18,47 @@ a {
 .site-header a {
   color: #245a81;
 }
+
+/*  for */
+/* Paint Mixer page container */
+.mixer-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Paint cards */
+.mixer-container .card {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Color preview boxes */
+.mixer-container .color-preview {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Mixed color preview */
+#mixedColorPreview {
+  height: 150px;
+  background-color: #f5f5f5;
+}
+
+/* Input field labels */
+.mixer-container .form-label {
+  font-weight: 600;
+}
+
+/* Mixer buttons */
+.mixer-container .btn {
+  min-width: 120px;
+}
+
+/* Percentage error message */
+#percentageError {
+  font-size: 14px;
+  text-align: center;
+}
