@@ -4,6 +4,9 @@ const paintController = require('../controllers/paintController');
 
 const router = express.Router();
 
+// GET: Display the Add Paint form
+router.get('/', paintController.paint_create_get);
+
 // POST /paints -> validate, sanitize, and save one paint (handled by the controller)
 router.post(
   '/',
