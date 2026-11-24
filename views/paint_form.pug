@@ -22,7 +22,7 @@ block content
             li= error.msg
 
     // Submit the form to the current URL using POST.
-    form#paintForm(method="POST")
+    form#paintForm(action="/paints/add" method="POST")
       .row.g-4
 
         // LEFT SIDE: Paint information.
