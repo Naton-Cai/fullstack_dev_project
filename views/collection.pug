@@ -5,7 +5,7 @@ block content
     
         //- Search and Add Paint
         div.d-flex.gap-3.mb-4
-            form.d-flex.gap-2.flex-grow-1(action='/' method='GET')
+            form.d-flex.gap-2.flex-grow-1(action='/paints' method='GET')
                 label.visually-hidden(for='paint-search') Search paint
                 input#paint-search.form-control.rounded-pill(
                     type='search'
@@ -15,7 +15,7 @@ block content
                 )
                 button.btn.btn-outline-dark(type='submit') Search
 
-            a.btn.btn-primary.text-nowrap(href='/change/this/to/add/paint/route') Add Paint
+            a.btn.btn-primary.text-nowrap(href='/paints/add') Add Paint
         
         //- Responsive paint grid
         if paint_list && paint_list.length !== 0

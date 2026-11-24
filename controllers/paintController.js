@@ -34,6 +34,32 @@ exports.paint_list = async (req, res) => {
   });
 };
 
+// display paint detail
+exports.paint_detail = async (req, res, next) => {
+  if (isObjectIdOrHexString(req.params.id) === false) {
+    res.status(400).send('Invalid paint ID');
+    return;
+  }
+
+  const paintId = req.params.id;
+
+  try {
+    const paint = await Paint.findById(paintId).exec();
+
+    if (paint === null) {
+      res.status(404).send('Paint not found.');
+      return;
+    }
+
+    res.render('paint_detail', {
+      title: 'Paint Detail',
+      paint,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // display Paint create form on GET.
 exports.paint_create_get = (req, res) => {
   res.render('paint_form', { title: 'Create Paint' });
@@ -133,7 +159,7 @@ exports.paint_create_post = [
     try {
       await paint.save();
       // redirect the main index
-      res.redirect('/');
+      res.redirect('/paints');
     } catch (err) {
       // Safety net: the schema's own validation failed.
       if (err.name === 'ValidationError') {
@@ -161,7 +187,7 @@ exports.paint_delete_get = async (req, res) => {
 
   if (paint === null) {
     // no results, redirect to the main collection page.
-    res.redirect('/');
+    res.redirect('/paints');
     return;
   }
 
@@ -183,11 +209,11 @@ exports.paint_delete_post = async (req, res) => {
 
   if (paint === null) {
     // no results, redirect to the main collection page.
-    res.redirect('/');
+    res.redirect('/paints');
     return;
   }
 
   // Delete object and redirect to the collection.
   await Paint.findByIdAndDelete(req.params.id);
-  res.redirect('/');
+  res.redirect('/paints');
 };

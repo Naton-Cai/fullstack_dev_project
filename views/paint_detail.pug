@@ -1,0 +1,62 @@
+extends layout
+
+block content
+    section.py-4(aria-label='Paint detail')
+        a.d-inline-block.mb-3(href='/paints') Back to collection
+
+        div.row.g-4
+            div.col-md-5
+                div.ratio.ratio-1x1.border.border-secondary.rounded(
+                    style=`background-color: ${paint.hexValue};`
+                    role='img'
+                    aria-label=`Color preview for ${paint.name}: ${paint.hexValue}`
+                )
+
+            div.col-md-7
+                h1= paint.name
+                p.fst-italic Hex: #{paint.hexValue}
+
+                h2.h5 Description
+                p= paint.description || 'No description provided.'
+
+                h2.h5 Mixing recipe
+                if paint.recipe && (paint.recipe.paint1Hex || paint.recipe.paint2Hex)
+                    if paint.recipe.paint1Percent != null && paint.recipe.paint2Percent != null
+                        if Math.abs(Number(paint.recipe.paint1Percent) + Number(paint.recipe.paint2Percent) - 100) > 0.001
+                            p.text-danger Warning: Mixing percentages must add up to 100%.
+                    div.row.g-3
+                        //- First recipe component
+                        if paint.recipe.paint1Hex
+                            div.col-12.col-sm-6
+                                div.border.rounded.p-3.d-flex.align-items-center.gap-3
+                                    div.border.rounded.flex-shrink-0(
+                                        style=`background-color: ${paint.recipe.paint1Hex}; width: 48px; height: 48px;`
+                                        role='img'
+                                        aria-label=`Color 1 preview: ${paint.recipe.paint1Hex}`
+                                    )
+                                    div
+                                        h3.h6.mb-1 Color 1
+                                        p.mb-1 Hex: #{paint.recipe.paint1Hex}
+                                        if paint.recipe.paint1Percent != null
+                                            p.mb-0 Ratio: #{paint.recipe.paint1Percent}%
+
+                        //- Second recipe component
+                        if paint.recipe.paint2Hex
+                            div.col-12.col-sm-6
+                                div.border.rounded.p-3.d-flex.align-items-center.gap-3
+                                    div.border.rounded.flex-shrink-0(
+                                        style=`background-color: ${paint.recipe.paint2Hex}; width: 48px; height: 48px;`
+                                        role='img'
+                                        aria-label=`Color 2 preview: ${paint.recipe.paint2Hex}`
+                                    )
+                                    div
+                                        h3.h6.mb-1 Color 2
+                                        p.mb-1 Hex: #{paint.recipe.paint2Hex}
+                                        if paint.recipe.paint2Percent != null
+                                            p.mb-0 Ratio: #{paint.recipe.paint2Percent}%
+                else
+                    p.text-muted No mixing recipe saved.
+
+                a.btn.btn-outline-danger.mt-3(
+                    href=`/paints/${paint._id}/delete`
+                ) Delete paint
