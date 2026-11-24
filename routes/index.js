@@ -9,7 +9,15 @@ router.get('/', (req, res) => {
   res.redirect('/paints');
 });
 
+// Display the Add Paint form.
+router.get('/paints/add', paintController.paint_create_get);
+
+// Process the Add Paint form.
+router.post('/paints/add', paintController.paint_create_post);
+
 router.get('/paints', paintController.paint_list);
+
+router.get('/paints/:id', paintController.paint_detail);
 
 router.get('/paints/:id/delete', paintController.paint_delete_get);
 

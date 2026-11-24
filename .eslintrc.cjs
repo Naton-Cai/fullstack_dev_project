@@ -13,4 +13,13 @@ module.exports = {
     'linebreak-style': 'off',
   },
   ignorePatterns: ['node_modules/', 'coverage/'],
+
+  overrides: [
+  {
+    files: ['public/javascripts/**/*.js'],
+    env: {
+      browser: true,
+    },
+  },
+],
 };
