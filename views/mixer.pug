@@ -1,0 +1,116 @@
+
+extends layout
+
+block content
+
+  // Main container for the Mixer page.
+  .mixer-container.mt-5
+
+    // Page title and description.
+    h1.mb-3 Paint Mixer
+    p.text-muted Mix two paint colors to create a new color.
+
+    .row.g-4
+
+      // First paint section.
+      .col-md-6
+        .card.p-3
+          h4 Paint 1
+
+          // Enter the first paint hex value.
+          label.form-label(for="paint1Hex") Hex Value
+          input#paint1Hex.form-control(
+            type="text"
+            name="paint1Hex"
+            value="#FF0000"
+            pattern="#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})"
+            maxlength="7"
+            required
+          )
+
+          // Preview the first paint color.
+          #paint1Preview.color-preview.mt-3(
+            style="background-color: #FF0000;"
+          )
+
+          // Display the first paint percentage.
+          label.form-label.mt-3(for="paint1Percent") Percentage
+          input#paint1Percent.form-control(
+            type="number"
+            name="paint1Percent"
+            min="0"
+            max="100"
+            value="50"
+            required
+          )
+
+      // Second paint section.
+      .col-md-6
+        .card.p-3
+          h4 Paint 2
+
+          // Enter the second paint hex value.
+          label.form-label(for="paint2Hex") Hex Value
+          input#paint2Hex.form-control(
+            type="text"
+            name="paint2Hex"
+            value="#0000FF"
+            pattern="#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})"
+            maxlength="7"
+            required
+          )
+
+          // Preview the second paint color.
+          #paint2Preview.color-preview.mt-3(
+            style="background-color: #0000FF;"
+          )
+
+          // Display the second paint percentage.
+          label.form-label.mt-3(for="paint2Percent") Percentage
+          input#paint2Percent.form-control(
+            type="number"
+            name="paint2Percent"
+            min="0"
+            max="100"
+            value="50"
+            required
+          )
+
+    // Display percentage validation errors.
+    #percentageError.text-danger.mt-3
+
+    // Button for mixing the selected colors.
+    .text-center.mt-4
+      button#mixButton.btn.btn-primary(
+        type="button"
+      ) Mix Colors
+
+    // Display the mixed paint result.
+    .card.p-4.mt-4
+      h4.text-center Mixed Color Result
+
+      // Preview of the mixed color.
+      #mixedColorPreview.color-preview.mt-3
+
+      // Display the resulting hex value.
+      p#mixedHex.text-center.mt-3 No color mixed yet
+
+      // Name of the new mixed paint.
+      label.form-label(for="mixedPaintName") Paint Name
+      input#mixedPaintName.form-control(
+        type="text"
+        name="name"
+        placeholder="Enter mixed paint name"
+      )
+
+      // Save and Cancel buttons.
+      .d-flex.gap-3.mt-4
+        button#saveMixButton.btn.btn-success(
+          type="button"
+          disabled
+        ) Save Paint
+
+        a.btn.btn-secondary(href="/paints") Cancel
+
+        // Connect the frontend JavaScript.
+  script(src="/javascripts/mixer.js")
