@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    section.py-4(aria-label='Paint Deletion')
+
+        h1 #{title}: 
+        
+        p Do you really want to delete #{paint.name}?
+
+        div.d-flex.gap-3.mb-4
+            form(action= ('/paints/'+paint._id+'/delete') method='POST')
+                button.btn.btn-danger(type='submit') Delete
+
+            a.btn.btn-secondary(href='/paints') Cancel

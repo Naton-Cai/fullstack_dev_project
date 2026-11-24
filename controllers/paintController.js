@@ -1,15 +1,63 @@
 const { body, validationResult } = require('express-validator');
+const { isObjectIdOrHexString } = require('mongoose');
 const Paint = require('../models/paint');
 
 const HEX_REGEX = /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/;
 
+// Utility function to escape regex special characters
+const escapeRegex = (str) => {
+  if (typeof str !== 'string') return '';
+  // Escape characters: . * + ? ^ $ { } ( ) | [ ] \
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
 // displays all paints
 exports.paint_list = async (req, res) => {
-  const allPaints = await Paint.find().sort({ name: 1 }).exec();
-  res.render('paint_list', {
+  const searchQuery = typeof req.query.search === 'string' ? (req.query.search ?? '').trim() : '';
+  const filter = {};
+
+  const safePattern = escapeRegex(searchQuery);
+
+  if (searchQuery !== '') {
+    filter.name = {
+      $regex: safePattern,
+      $options: 'i',
+    };
+  }
+
+  const allPaints = await Paint.find(filter).sort({ name: 1 }).exec();
+
+  res.render('collection', {
     title: 'Paint Collection',
     paint_list: allPaints,
+    search: searchQuery,
   });
+};
+
+// display paint detail
+exports.paint_detail = async (req, res, next) => {
+  if (isObjectIdOrHexString(req.params.id) === false) {
+    res.status(400).send('Invalid paint ID');
+    return;
+  }
+
+  const paintId = req.params.id;
+
+  try {
+    const paint = await Paint.findById(paintId).exec();
+
+    if (paint === null) {
+      res.status(404).send('Paint not found.');
+      return;
+    }
+
+    res.render('paint_detail', {
+      title: 'Paint Detail',
+      paint,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 // display Paint create form on GET.
@@ -54,7 +102,11 @@ exports.paint_create_post = [
     // for the schema rule, if both percentages are given, they must sum to 100.
     .custom((value, { req }) => {
       const p1 = req.body.paint1Percent; // already converted by toFloat() above
-      if (typeof p1 === 'number' && !Number.isNaN(p1) && Math.abs(p1 + value - 100) > 0.001) {
+      if (
+        typeof p1 === 'number'
+        && !Number.isNaN(p1)
+        && Math.abs(p1 + value - 100) > 0.001
+      ) {
         throw new Error('Paint 1 and Paint 2 percentages must add up to 100.');
       }
       return true;
@@ -66,21 +118,31 @@ exports.paint_create_post = [
     const errors = validationResult(req);
 
     const {
-      name, hexValue, description,
-      paint1Hex, paint1Percent, paint2Hex, paint2Percent,
+      name,
+      hexValue,
+      description,
+      paint1Hex,
+      paint1Percent,
+      paint2Hex,
+      paint2Percent,
     } = req.body;
 
     // only include recipe fields the user actually filled in.
     const recipe = Object.fromEntries(
       Object.entries({
-        paint1Hex, paint1Percent, paint2Hex, paint2Percent,
-      })
-        .filter(([, v]) => v !== '' && v != null),
+        paint1Hex,
+        paint1Percent,
+        paint2Hex,
+        paint2Percent,
+      }).filter(([, v]) => v !== '' && v != null),
     );
 
     // create Paint object with escaped and trimmed data
     const paint = new Paint({
-      name, hexValue, description, recipe,
+      name,
+      hexValue,
+      description,
+      recipe,
     });
 
     if (!errors.isEmpty()) {
@@ -97,7 +159,7 @@ exports.paint_create_post = [
     try {
       await paint.save();
       // redirect the main index
-      res.redirect('/');
+      res.redirect('/paints');
     } catch (err) {
       // Safety net: the schema's own validation failed.
       if (err.name === 'ValidationError') {
@@ -115,12 +177,17 @@ exports.paint_create_post = [
 
 // Display Paint delete form on GET.
 exports.paint_delete_get = async (req, res) => {
+  if (isObjectIdOrHexString(req.params.id) === false) {
+    res.status(400).send('Invalid paint ID');
+    return;
+  }
+
   // Get details of paints
   const paint = await Paint.findById(req.params.id).exec();
 
   if (paint === null) {
     // no results, redirect to the main collection page.
-    res.redirect('/');
+    res.redirect('/paints');
     return;
   }
 
@@ -132,16 +199,21 @@ exports.paint_delete_get = async (req, res) => {
 
 // Handle Paint delete on POST.
 exports.paint_delete_post = async (req, res) => {
+  if (isObjectIdOrHexString(req.params.id) === false) {
+    res.status(400).send('Invalid paint ID');
+    return;
+  }
+
   // Get details of paints
   const paint = await Paint.findById(req.params.id).exec();
 
   if (paint === null) {
     // no results, redirect to the main collection page.
-    res.redirect('/');
+    res.redirect('/paints');
     return;
   }
 
   // Delete object and redirect to the collection.
-  await Paint.findByIdAndDelete(req.body.paintid);
-  res.redirect('/');
+  await Paint.findByIdAndDelete(req.params.id);
+  res.redirect('/paints');
 };
