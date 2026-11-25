@@ -187,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const { elements } = saveForm;
     elements.hexValue.value = mixedHexValue;
-    elements.description.value = `Mix of ${name1 || hex1} and ${name2 || hex2}`;
     elements.paint1Name.value = name1;
     elements.paint1Hex.value = hex1;
     elements.paint1Percent.value = paint1Percent.value;

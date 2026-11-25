@@ -123,7 +123,7 @@ block content
       h4.text-center Mixed Color Result
 
       // Hidden fields filled in by mixer.js before submitting.
-      each field in ['hexValue', 'description', 'paint1Name', 'paint1Hex', 'paint1Percent', 'paint2Name', 'paint2Hex', 'paint2Percent']
+      each field in ['hexValue', 'paint1Name', 'paint1Hex', 'paint1Percent', 'paint2Name', 'paint2Hex', 'paint2Percent']
         input(type="hidden" name=field)
 
       // Preview of the mixed color.
@@ -140,6 +140,12 @@ block content
         placeholder="Enter mixed paint name"
         required
       )
+      label.form-label(for="description") Description
+      textarea#description.form-control(
+        name="description"
+        rows="3"
+        placeholder="Optional paint description"
+      )= description
 
       // Save and Cancel buttons.
       .d-flex.gap-3.mt-4
