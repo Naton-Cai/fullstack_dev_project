@@ -32,10 +32,10 @@ block content
                                     div.border.rounded.flex-shrink-0(
                                         style=`background-color: ${paint.recipe.paint1Hex}; width: 48px; height: 48px;`
                                         role='img'
-                                        aria-label=`Color 1 preview: ${paint.recipe.paint1Hex}`
+                                        aria-label=`${paint.recipe.paint1Name || 'Color 1'} preview: ${paint.recipe.paint1Hex}`
                                     )
                                     div
-                                        h3.h6.mb-1 Color 1
+                                        h3.h6.mb-1= paint.recipe.paint1Name || 'Color 1'
                                         p.mb-1 Hex: #{paint.recipe.paint1Hex}
                                         if paint.recipe.paint1Percent != null
                                             p.mb-0 Ratio: #{paint.recipe.paint1Percent}%
@@ -47,10 +47,10 @@ block content
                                     div.border.rounded.flex-shrink-0(
                                         style=`background-color: ${paint.recipe.paint2Hex}; width: 48px; height: 48px;`
                                         role='img'
-                                        aria-label=`Color 2 preview: ${paint.recipe.paint2Hex}`
+                                        aria-label=`${paint.recipe.paint2Name || 'Color 2'} preview: ${paint.recipe.paint2Hex}`
                                     )
                                     div
-                                        h3.h6.mb-1 Color 2
+                                        h3.h6.mb-1= paint.recipe.paint2Name || 'Color 2'
                                         p.mb-1 Hex: #{paint.recipe.paint2Hex}
                                         if paint.recipe.paint2Percent != null
                                             p.mb-0 Ratio: #{paint.recipe.paint2Percent}%
