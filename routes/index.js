@@ -20,7 +20,6 @@ router.get('/paints/mixer', (req, res) => {
   res.render('mixer', { title: 'Paint Mixer' });
 });
 
-
 router.get('/paints', paintController.paint_list);
 
 router.get('/paints/:id', paintController.paint_detail);

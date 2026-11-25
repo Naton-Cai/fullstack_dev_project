@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const paint1Name = document.getElementById('paint1Name');
+  const paint2Name = document.getElementById('paint2Name');
+
   const paint1Hex = document.getElementById('paint1Hex');
   const paint2Hex = document.getElementById('paint2Hex');
 
@@ -16,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const mixedHex = document.getElementById('mixedHex');
   const mixPreview = document.getElementById('mixedColorPreview');
   const mixButton = document.getElementById('mixButton');
+
+  const saveForm = document.getElementById('saveForm');
+  const saveMixButton = document.getElementById('saveMixButton');
+
+  let mixedHexValue = null;
 
   // Check whether the hex color is valid.
   function isValidHex(hex) {
@@ -44,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .join('');
     }
 
-    // Validate 6-character hex format
+    // validate 6-character hex format
     if (!/^[0-9a-fA-F]{6}$/.test(cleanHex)) {
       return null;
     }
@@ -70,6 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Validate hex values and mixing percentages.
   function validateInputs() {
+  // Any input change invalidates the previous mix.
+    mixedHexValue = null;
+    saveMixButton.disabled = true;
+
     const percent1 = Number(paint1Percent.value);
     const percent2 = Number(paint2Percent.value);
 
@@ -77,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       || !isValidHex(paint2Hex.value.trim())) {
       percentageError.textContent = 'Please enter valid hex colors.';
       mixButton.disabled = true;
+      saveMixButton.disabled = true;
     } else if (
       paint1Percent.value === ''
       || paint2Percent.value === ''
@@ -85,10 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
       || Math.abs(percent1 + percent2 - 100) > 0.001
     ) {
       percentageError.textContent = 'Both percentages must be between 0 and 100 and add up to 100%.';
+      saveMixButton.disabled = true;
       mixButton.disabled = true;
     } else {
       percentageError.textContent = '';
       mixButton.disabled = false;
+      saveMixButton.disabled = false;
     }
   }
 
@@ -117,27 +132,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function mixColors() {
-    console.log('mixColors clicked');
-    try {
-      const rgb1 = hexToRgb(paint1Hex.value.trim());
-      const rgb2 = hexToRgb(paint2Hex.value.trim());
+    const rgb1 = hexToRgb(paint1Hex.value.trim());
+    const rgb2 = hexToRgb(paint2Hex.value.trim());
 
-      // guard against invalid hex values.
-      if (!rgb1 || !rgb2) {
-        return;
-      }
-
-      // t runs from 0 (all paint 1) to 1 (all paint 2).
-      const t = Number(paint2Percent.value) / 100;
-
-      const mixed = mixbox.lerp(rgb1, rgb2, t);
-      console.log('mixed:', mixed);
-
-      mixPreview.style.backgroundColor = mixed;
-      mixedHex.textContent = rgbStringToHex(mixed);
-    } catch (err) {
-      console.error('Mix failed:', err);
+    if (!rgb1 || !rgb2) {
+      return;
     }
+
+    const t = Number(paint2Percent.value) / 100;
+    const hex = rgbStringToHex(mixbox.lerp(rgb1, rgb2, t));
+
+    mixPreview.style.backgroundColor = hex;
+    mixedHex.textContent = hex;
+    mixedHexValue = hex;
+    saveMixButton.disabled = false;
   }
 
   // Update the hex input when the user selects a color.
@@ -162,6 +170,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update the preview and clear any validation errors.
     updatePreview();
+  });
+
+  // Fill the hidden fields right before the form posts to /paints/add.
+  saveForm.addEventListener('submit', (event) => {
+    if (!mixedHexValue) {
+      event.preventDefault();
+      percentageError.textContent = 'Mix the colors before saving.';
+      return;
+    }
+
+    const name1 = paint1Name.value.trim();
+    const name2 = paint2Name.value.trim();
+    const hex1 = paint1Hex.value.trim();
+    const hex2 = paint2Hex.value.trim();
+
+    const { elements } = saveForm;
+    elements.hexValue.value = mixedHexValue;
+    elements.description.value = `Mix of ${name1 || hex1} and ${name2 || hex2}`;
+    elements.paint1Name.value = name1;
+    elements.paint1Hex.value = hex1;
+    elements.paint1Percent.value = paint1Percent.value;
+    elements.paint2Name.value = name2;
+    elements.paint2Hex.value = hex2;
+    elements.paint2Percent.value = paint2Percent.value;
   });
 
   // Update previews when hex values change.

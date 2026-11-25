@@ -57,6 +57,14 @@ a {
   min-width: 120px;
 }
 
+.mixer-container .form-control-color {
+  width: 100%;
+  height: 2rem;
+  padding: 0.575rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+}
+
 /* Percentage error message */
 #percentageError {
   font-size: 14px;
@@ -174,5 +182,3 @@ a {
     width: 100%;
   }
 }
-
-

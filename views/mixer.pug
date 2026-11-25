@@ -16,7 +16,15 @@ block content
       .col-md-6
         .card.p-3
           h4 Paint 1
-
+          // Paint name is required.
+          .mb-3
+            label.form-label(for="paint1Name") Paint Name
+            input#paint1Name.form-control(
+              type="text"
+              name="name"
+              value=paint1Name
+              placeholder="Enter paint name"
+            )
           // Enter the first paint hex value.
           label.form-label(for="paint1Hex") Hex Value
           input#paint1Hex.form-control(
@@ -57,7 +65,14 @@ block content
       .col-md-6
         .card.p-3
           h4 Paint 2
-
+          .mb-3
+            label.form-label(for="paint2Name") Paint Name
+            input#paint2Name.form-control(
+              type="text"
+              name="name"
+              value=paint2Name
+              placeholder="Enter paint name"
+            )
           // Enter the second paint hex value.
           label.form-label(for="paint2Hex") Hex Value
           input#paint2Hex.form-control(
@@ -103,9 +118,13 @@ block content
         type="button"
       ) Mix Colors
 
-    // Display the mixed paint result.
-    .card.p-4.mt-4
+        // Display the mixed paint result.
+    form#saveForm.card.p-4.mt-4(action="/paints/add" method="POST")
       h4.text-center Mixed Color Result
+
+      // Hidden fields filled in by mixer.js before submitting.
+      each field in ['hexValue', 'description', 'paint1Name', 'paint1Hex', 'paint1Percent', 'paint2Name', 'paint2Hex', 'paint2Percent']
+        input(type="hidden" name=field)
 
       // Preview of the mixed color.
       #mixedColorPreview.color-preview.mt-3
@@ -119,15 +138,12 @@ block content
         type="text"
         name="name"
         placeholder="Enter mixed paint name"
+        required
       )
 
       // Save and Cancel buttons.
       .d-flex.gap-3.mt-4
-        button#saveMixButton.btn.btn-success(
-          type="button"
-          disabled
-        ) Save Paint
-
+        button#saveMixButton.btn.btn-success(type="submit" disabled) Save Paint
         a.btn.btn-secondary(href="/paints") Cancel
 
         // Connect the frontend JavaScript.
