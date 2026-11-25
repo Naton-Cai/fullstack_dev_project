@@ -28,6 +28,15 @@ block content
             required
           )
 
+          // Users can choose a color instead of typing its hex value.
+          .mb-3
+            label.form-label(for="paint1Picker") Choose Color
+            input#paint1Picker.form-control.form-control-color(
+              type="color"
+              value="#FF0000"
+              title="Choose a paint color"
+            )
+
           // Preview the first paint color.
           #paint1Preview.color-preview.mt-3(
             style="background-color: #FF0000;"
@@ -59,6 +68,15 @@ block content
             maxlength="7"
             required
           )
+
+          // Users can choose a color instead of typing its hex value.
+          .mb-3
+            label.form-label(for="paint2Picker") Choose Color
+            input#paint2Picker.form-control.form-control-color(
+              type="color"
+              value="#0000FF"
+              title="Choose a paint color"
+            )
 
           // Preview the second paint color.
           #paint2Preview.color-preview.mt-3(
@@ -113,4 +131,5 @@ block content
         a.btn.btn-secondary(href="/paints") Cancel
 
         // Connect the frontend JavaScript.
+  script(src="/vendor/mixbox/mixbox.js")
   script(src="/javascripts/mixer.js")

@@ -33,7 +33,7 @@ app.use(
 );
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/vendor/mixbox', express.static(path.join(__dirname, 'node_modules/mixbox')));
 
 // temp insert to test connectivity to MongoDB, we should remove later
 app.use('/testinsert', testinsertRouter);
