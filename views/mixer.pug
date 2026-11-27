@@ -38,10 +38,8 @@ block content
           input#paint1Percent.form-control(
             type="number"
             name="paint1Percent"
-            min="0"
-            max="100"
             value="50"
-            required
+            readonly
           )
 
       // Second paint section.
@@ -70,11 +68,26 @@ block content
           input#paint2Percent.form-control(
             type="number"
             name="paint2Percent"
-            min="0"
-            max="100"
             value="50"
-            required
+            readonly
           )
+
+    // Slider to control both paint percentages.
+    .mt-4
+      label.form-label(for="mixRatio") Mixing Ratio
+      input#mixRatio.form-range(
+        type="range"
+        min="0"
+        max="100"
+        step="1"
+        value="50"
+      )
+
+      // Display the slider range.
+      .d-flex.justify-content-between.text-muted
+        span 0%
+        span 50%
+        span 100%
 
     // Display percentage validation errors.
     #percentageError.text-danger.mt-3
@@ -112,5 +125,5 @@ block content
 
         a.btn.btn-secondary(href="/paints") Cancel
 
-        // Connect the frontend JavaScript.
+  // Connect the frontend JavaScript.
   script(src="/javascripts/mixer.js")

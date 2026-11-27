@@ -13,4 +13,14 @@ module.exports = {
     'linebreak-style': 'off',
   },
   ignorePatterns: ['node_modules/', 'coverage/'],
+
+  // Enable browser globals for frontend JavaScript files.
+  overrides: [
+    {
+      files: ['public/javascripts/**/*.js'],
+      env: {
+        browser: true,
+      },
+    },
+  ],
 };
