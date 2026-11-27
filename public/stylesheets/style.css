@@ -1,3 +1,4 @@
+
 body {
   font:
     14px 'Lucida Grande',
@@ -10,7 +11,7 @@ a {
   color: #00b7ff;
 }
 
-/* Navbar css */
+/* Navbar CSS */
 .site-header {
   background-color: #f1f3f5;
 }
@@ -19,7 +20,10 @@ a {
   color: #245a81;
 }
 
-/*  for */
+/* ============================= */
+/* Paint Mixer page styles       */
+/* ============================= */
+
 /* Paint Mixer page container */
 .mixer-container {
   max-width: 900px;
@@ -62,6 +66,111 @@ a {
   font-size: 14px;
   text-align: center;
 }
-.mixer-container {
-  padding-top: 20px;
+
+/* ============================= */
+/* Add/Edit Paint page styles    */
+/* ============================= */
+
+/* Main form container */
+.paint-form-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Page heading */
+.paint-form-container h1 {
+  margin-bottom: 25px;
+  color: #333333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Form labels */
+.paint-form-container .form-label {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Text inputs and textarea */
+.paint-form-container .form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Highlight the active input */
+.paint-form-container .form-control:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+/* Preview area */
+.paint-form-container .preview-section {
+  padding: 10px;
+}
+
+/* Color preview square */
+.paint-form-container #colorPreview {
+  width: 100%;
+  height: 150px;
+  background-color: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+/* Hex code under the preview */
+.paint-form-container #previewHex {
+  margin-top: 10px;
+  color: #555555;
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* Validation error message */
+.paint-form-container #hexError {
+  min-height: 18px;
+  color: #dc3545;
+  font-size: 13px;
+}
+
+/* Save and Cancel button container */
+.paint-form-container .form-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Button appearance */
+.paint-form-container .form-buttons .btn {
+  min-width: 120px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 576px) {
+  .paint-form-container {
+    margin: 20px auto;
+    padding: 20px;
+  }
+
+  .paint-form-container .form-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .paint-form-container .form-buttons .btn {
+    width: 100%;
+  }
 }
