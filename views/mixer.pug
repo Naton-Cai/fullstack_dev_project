@@ -58,7 +58,7 @@ block content
             min="0"
             max="100"
             value="50"
-            required
+            readonly
           )
 
       // Second paint section.
@@ -126,12 +126,6 @@ block content
 
     // Display percentage validation errors.
     #percentageError.text-danger.mt-3
-
-    // Button for mixing the selected colors.
-    .text-center.mt-4
-      button#mixButton.btn.btn-primary(
-        type="button"
-      ) Mix Colors
 
         // Display the mixed paint result.
     form#saveForm.card.p-4.mt-4(action="/paints/add" method="POST")
