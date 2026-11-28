@@ -1,18 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Check whether the hex color is valid.
+function isValidHex(hex) {
+  return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex);
+}
+
+// Check whether both percentages are valid.
+function isValidPercentage(value1, value2) {
+  const percent1 = Number(value1);
+  const percent2 = Number(value2);
+
+  return (
+    String(value1).trim() !== ''
+    && String(value2).trim() !== ''
+    && Number.isFinite(percent1)
+    && Number.isFinite(percent2)
+    && percent1 >= 0
+    && percent1 <= 100
+    && percent2 >= 0
+    && percent2 <= 100
+    && Math.abs(percent1 + percent2 - 100) <= 0.001
+  );
+}
+
+// Validate hex values and mixing percentages.
+function validateInputs(hex1, hex2, percent1, percent2) {
+  if (!isValidHex(hex1.trim()) || !isValidHex(hex2.trim())) {
+    return 'Please enter valid hex colors.';
+  }
+
+  if (!isValidPercentage(percent1, percent2)) {
+    return 'Both percentages must be between 0 and 100 and add up to 100%.';
+  }
+
+  return '';
+}
+
+// Run frontend functionality in the browser.
+if (typeof document !== 'undefined') {document.addEventListener('DOMContentLoaded', () => {
   const paint1Name = document.getElementById('paint1Name');
   const paint2Name = document.getElementById('paint2Name');
 
   const paint1Hex = document.getElementById('paint1Hex');
   const paint2Hex = document.getElementById('paint2Hex');
 
-  const paint1Picker = document.getElementById('paint1Picker');
+    const paint1Picker = document.getElementById('paint1Picker');
   const paint2Picker = document.getElementById('paint2Picker');
 
   const paint1Preview = document.getElementById('paint1Preview');
   const paint2Preview = document.getElementById('paint2Preview');
 
-  const paint1Percent = document.getElementById('paint1Percent');
-  const paint2Percent = document.getElementById('paint2Percent');
+    const paint1Percent = document.getElementById('paint1Percent');
+    const paint2Percent = document.getElementById('paint2Percent');
 
   const percentageError = document.getElementById('percentageError');
 
@@ -20,92 +57,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const mixPreview = document.getElementById('mixedColorPreview');
   const mixButton = document.getElementById('mixButton');
 
-  const saveForm = document.getElementById('saveForm');
+    const saveForm = document.getElementById('saveForm');
   const saveMixButton = document.getElementById('saveMixButton');
 
   let mixedHexValue = null;
 
-  // Check whether the hex color is valid.
-  function isValidHex(hex) {
-    return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex);
-  }
+  // Get the mixing ratio slider.
+    const mixRatio = document.getElementById('mixRatio');
 
-  // Convert a 3-digit hex value to a 6-digit hex value.
-  // Example: #F53 becomes #FF5533.
-  function expandHex(hex) {
-    if (/^#[0-9A-Fa-f]{3}$/.test(hex)) {
-      return `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+    // Display validation results.
+    function showValidation() {
+      const error = validateInputs(
+        paint1Hex.value,
+        paint2Hex.value,
+        paint1Percent.value,
+        paint2Percent.value,
+      );
+
+      percentageError.textContent = error;
+      mixButton.disabled = error !== '';
     }
-
-    return hex;
-  }
-
-  function hexToRgb(hex) {
-  // Remove leading '#' if present
-    let cleanHex = hex.replace(/^#/, '');
-
-    // Expand 3-digit shorthand (e.g., "03F" -> "0033FF")
-    if (cleanHex.length === 3) {
-      cleanHex = cleanHex
-        .split('')
-        .map((char) => char + char)
-        .join('');
-    }
-
-    // validate 6-character hex format
-    if (!/^[0-9a-fA-F]{6}$/.test(cleanHex)) {
-      return null;
-    }
-
-    // Parse each color channel from base-16 to base-10
-    const r = parseInt(cleanHex.slice(0, 2), 16);
-    const g = parseInt(cleanHex.slice(2, 4), 16);
-    const b = parseInt(cleanHex.slice(4, 6), 16);
-
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-
-  // Convert "rgb(r, g, b)" to "#RRGGBB".
-  function rgbStringToHex(rgb) {
-    const values = Array.isArray(rgb) ? rgb : rgb.match(/\d+/g).map(Number);
-
-    return `#${values
-      .slice(0, 3)
-      .map((v) => Math.round(v).toString(16).padStart(2, '0'))
-      .join('')
-      .toUpperCase()}`;
-  }
-
-  // Validate hex values and mixing percentages.
-  function validateInputs() {
-  // Any input change invalidates the previous mix.
-    mixedHexValue = null;
-    saveMixButton.disabled = true;
-
-    const percent1 = Number(paint1Percent.value);
-    const percent2 = Number(paint2Percent.value);
-
-    if (!isValidHex(paint1Hex.value.trim())
-      || !isValidHex(paint2Hex.value.trim())) {
-      percentageError.textContent = 'Please enter valid hex colors.';
-      mixButton.disabled = true;
-      saveMixButton.disabled = true;
-    } else if (
-      paint1Percent.value === ''
-      || paint2Percent.value === ''
-      || percent1 < 0 || percent1 > 100
-      || percent2 < 0 || percent2 > 100
-      || Math.abs(percent1 + percent2 - 100) > 0.001
-    ) {
-      percentageError.textContent = 'Both percentages must be between 0 and 100 and add up to 100%.';
-      saveMixButton.disabled = true;
-      mixButton.disabled = true;
-    } else {
-      percentageError.textContent = '';
-      mixButton.disabled = false;
-      saveMixButton.disabled = false;
-    }
-  }
 
   // Update both paint color previews.
   function updatePreview() {
@@ -128,8 +99,68 @@ document.addEventListener('DOMContentLoaded', () => {
       paint2Picker.value = expandHex(hex2).toUpperCase();
     }
 
-    validateInputs();
+    showValidation();
   }
+
+    // Convert a 3-digit hex value to a 6-digit hex value.
+  // Example: #F53 becomes #FF5533.
+    function expandHex(hex) {
+      if (/^#[0-9A-Fa-f]{3}$/.test(hex)) {
+      return `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+    }
+
+    return hex;
+  }
+
+  function hexToRgb(hex) {
+  // Remove leading '#' if present
+    let cleanHex = hex.replace(/^#/, '');
+
+      // Expand 3-digit shorthand (e.g., "03F" -> "0033FF")
+    if (cleanHex.length === 3) {
+      cleanHex = cleanHex
+        .split('')
+        .map((char) => char + char)
+        .join('');
+    }
+
+      showValidation();
+    }
+
+    // Automatically update both percentages using the slider.
+    function updateRatio() {
+    // Any input change invalidates the previous mix.
+    mixedHexValue = null;
+    saveMixButton.disabled = true;
+
+    const ratio = Number(mixRatio.value);
+
+    if (!isValidHex(paint1Hex.value.trim())
+      || !isValidHex(paint2Hex.value.trim())) {
+      percentageError.textContent = 'Please enter valid hex colors.';
+      mixButton.disabled = true;
+      saveMixButton.disabled = true;
+    } else if (
+      paint1Percent.value === ''
+      || paint2Percent.value === ''
+      || percent1 < 0 || percent1 > 100
+      || percent2 < 0 || percent2 > 100
+      || Math.abs(percent1 + percent2 - 100) > 0.001
+    ) {
+      percentageError.textContent = 'Both percentages must be between 0 and 100 and add up to 100%.';
+      saveMixButton.disabled = true;
+      mixButton.disabled = true;
+    } else {
+      percentageError.textContent = '';
+      mixButton.disabled = false;
+      saveMixButton.disabled = false;
+      paint1Percent.value = ratio;
+      paint2Percent.value = 100 - ratio;
+
+      showValidation();
+    }
+  }
+
 
   function mixColors() {
     const rgb1 = hexToRgb(paint1Hex.value.trim());
@@ -195,16 +226,26 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.paint2Percent.value = paint2Percent.value;
   });
 
-  // Update previews when hex values change.
-  paint1Hex.addEventListener('input', updatePreview);
-  paint2Hex.addEventListener('input', updatePreview);
+    // Update previews when hex values change.
+    paint1Hex.addEventListener('input', updatePreview);
+    paint2Hex.addEventListener('input', updatePreview);
 
-  // Validate when percentages change.
-  paint1Percent.addEventListener('input', validateInputs);
-  paint2Percent.addEventListener('input', validateInputs);
+    // Update percentages when the slider moves.
+    mixRatio.addEventListener('input', updateRatio);
 
-  mixButton.addEventListener('click', mixColors);
+    mixButton.addEventListener('click', mixColors);
 
-  // Display the initial previews.
-  updatePreview();
-});
+  // Display the initial percentages and color previews.
+    updateRatio();
+    updatePreview();
+  });
+}
+
+// Export functions for unit testing.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    isValidHex,
+    isValidPercentage,
+    validateInputs,
+  };
+}

@@ -14,12 +14,13 @@ module.exports = {
   },
   ignorePatterns: ['node_modules/', 'coverage/'],
 
+  // Enable browser globals for frontend JavaScript files.
   overrides: [
-  {
-    files: ['public/javascripts/**/*.js'],
-    env: {
-      browser: true,
+    {
+      files: ['public/javascripts/**/*.js'],
+      env: {
+        browser: true,
+      },
     },
-  },
-],
+  ],
 };
