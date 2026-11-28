@@ -1,4 +1,3 @@
-
 /*
  * Our porpuse
  * 1. Read the paint name and hex value.
@@ -24,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hexError = document.getElementById('hexError');
 
   // Check that all required HTML elements exist.
-  if (!form || !nameInput || !hexInput || !hexPicker ||
-      !colorPreview || !previewHex || !hexError) {
+  if (!form || !nameInput || !hexInput || !hexPicker || !colorPreview || !previewHex || !hexError) {
     console.error('Add Paint: Missing required HTML elements.');
     return;
   }
@@ -70,8 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       previewHex.textContent = 'Invalid color';
 
       // Display a helpful validation message.
-      hexError.textContent =
-        'Enter a valid hex color, such as #FF5733 or #F53.';
+      hexError.textContent = 'Enter a valid hex color, such as #FF5733 or #F53.';
 
       // Prevent submission of invalid hex values.
       hexInput.setCustomValidity('Invalid hex color');

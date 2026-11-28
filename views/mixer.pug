@@ -16,7 +16,15 @@ block content
       .col-md-6
         .card.p-3
           h4 Paint 1
-
+          // Paint name is required.
+          .mb-3
+            label.form-label(for="paint1Name") Paint Name
+            input#paint1Name.form-control(
+              type="text"
+              name="name"
+              value=paint1Name
+              placeholder="Enter paint name"
+            )
           // Enter the first paint hex value.
           label.form-label(for="paint1Hex") Hex Value
           input#paint1Hex.form-control(
@@ -28,6 +36,15 @@ block content
             required
           )
 
+          // Users can choose a color instead of typing its hex value.
+          .mb-3
+            label.form-label(for="paint1Picker") Choose Color
+            input#paint1Picker.form-control.form-control-color(
+              type="color"
+              value="#FF0000"
+              title="Choose a paint color"
+            )
+
           // Preview the first paint color.
           #paint1Preview.color-preview.mt-3(
             style="background-color: #FF0000;"
@@ -38,6 +55,8 @@ block content
           input#paint1Percent.form-control(
             type="number"
             name="paint1Percent"
+            min="0"
+            max="100"
             value="50"
             readonly
           )
@@ -46,7 +65,14 @@ block content
       .col-md-6
         .card.p-3
           h4 Paint 2
-
+          .mb-3
+            label.form-label(for="paint2Name") Paint Name
+            input#paint2Name.form-control(
+              type="text"
+              name="name"
+              value=paint2Name
+              placeholder="Enter paint name"
+            )
           // Enter the second paint hex value.
           label.form-label(for="paint2Hex") Hex Value
           input#paint2Hex.form-control(
@@ -57,6 +83,15 @@ block content
             maxlength="7"
             required
           )
+
+          // Users can choose a color instead of typing its hex value.
+          .mb-3
+            label.form-label(for="paint2Picker") Choose Color
+            input#paint2Picker.form-control.form-control-color(
+              type="color"
+              value="#0000FF"
+              title="Choose a paint color"
+            )
 
           // Preview the second paint color.
           #paint2Preview.color-preview.mt-3(
@@ -92,15 +127,13 @@ block content
     // Display percentage validation errors.
     #percentageError.text-danger.mt-3
 
-    // Button for mixing the selected colors.
-    .text-center.mt-4
-      button#mixButton.btn.btn-primary(
-        type="button"
-      ) Mix Colors
-
-    // Display the mixed paint result.
-    .card.p-4.mt-4
+        // Display the mixed paint result.
+    form#saveForm.card.p-4.mt-4(action="/paints/add" method="POST")
       h4.text-center Mixed Color Result
+
+      // Hidden fields filled in by mixer.js before submitting.
+      each field in ['hexValue', 'paint1Name', 'paint1Hex', 'paint1Percent', 'paint2Name', 'paint2Hex', 'paint2Percent']
+        input(type="hidden" name=field)
 
       // Preview of the mixed color.
       #mixedColorPreview.color-preview.mt-3
@@ -114,16 +147,20 @@ block content
         type="text"
         name="name"
         placeholder="Enter mixed paint name"
+        required
       )
+      label.form-label(for="description") Description
+      textarea#description.form-control(
+        name="description"
+        rows="3"
+        placeholder="Optional paint description"
+      )= description
 
       // Save and Cancel buttons.
       .d-flex.gap-3.mt-4
-        button#saveMixButton.btn.btn-success(
-          type="button"
-          disabled
-        ) Save Paint
-
+        button#saveMixButton.btn.btn-success(type="submit" disabled) Save Paint
         a.btn.btn-secondary(href="/paints") Cancel
 
-  // Connect the frontend JavaScript.
+        // Connect the frontend JavaScript.
+  script(src="/vendor/mixbox/mixbox.js")
   script(src="/javascripts/mixer.js")
