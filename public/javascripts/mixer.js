@@ -49,6 +49,9 @@ if (typeof document !== 'undefined') {
     const percentageError = document.getElementById('percentageError');
     const mixButton = document.getElementById('mixButton');
 
+    // Get the mixing ratio slider.
+    const mixRatio = document.getElementById('mixRatio');
+
     // Display validation results.
     function showValidation() {
       const error = validateInputs(
@@ -76,15 +79,25 @@ if (typeof document !== 'undefined') {
       showValidation();
     }
 
+    // Automatically update both percentages using the slider.
+    function updateRatio() {
+      const ratio = Number(mixRatio.value);
+
+      paint1Percent.value = ratio;
+      paint2Percent.value = 100 - ratio;
+
+      showValidation();
+    }
+
     // Update previews when hex values change.
     paint1Hex.addEventListener('input', updatePreview);
     paint2Hex.addEventListener('input', updatePreview);
 
-    // Validate when percentages change.
-    paint1Percent.addEventListener('input', showValidation);
-    paint2Percent.addEventListener('input', showValidation);
+    // Update percentages when the slider moves.
+    mixRatio.addEventListener('input', updateRatio);
 
-    // Display the initial previews.
+    // Display the initial percentages and color previews.
+    updateRatio();
     updatePreview();
   });
 }

@@ -1,3 +1,4 @@
+
 body {
   font:
     14px 'Lucida Grande',
@@ -10,7 +11,7 @@ a {
   color: #00b7ff;
 }
 
-/* Navbar css */
+/* Navbar CSS */
 .site-header {
   background-color: #f1f3f5;
 }
@@ -19,7 +20,10 @@ a {
   color: #245a81;
 }
 
-/*  for */
+/* ============================= */
+/* Paint Mixer page styles       */
+/* ============================= */
+
 /* Paint Mixer page container */
 .mixer-container {
   max-width: 900px;
@@ -63,13 +67,9 @@ a {
   text-align: center;
 }
 
-
-/*
- * File: public/stylesheets/style.css
- *
- * Add/Edit Paint page styles.
-
- */
+/* ============================= */
+/* Add/Edit Paint page styles    */
+/* ============================= */
 
 /* Main form container */
 .paint-form-container {
@@ -174,5 +174,3 @@ a {
     width: 100%;
   }
 }
-
-
